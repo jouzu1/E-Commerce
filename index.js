@@ -25,3 +25,7 @@ mongoose.connect(process.env.MONGO_URL).then(()=>{
     console.log(err);
 });
 
+app.get("/test/app",()=>{
+    console.log("HTTP GET Berhasil di coba")
+})
+
