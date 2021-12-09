@@ -10,8 +10,13 @@ const dotenv = require('dotenv');               //Ini juga sama, memanggil secre
 dotenv.config();                                //Line ini untuk bisa menggunakan/memanggil file .env dengan cara process.env.*namaVariabelnya*
 
 
-app.listen(5000,()=>{
-    console.log('Backend server sedang berjalan')
+app.listen(process.env.PORT || 5000,()=>{       //Menambahkan kondisi jika nilai port tidak ada, bisa menggunakan default
+    if(process.env.PORT == null){
+        console.log('Backend server sedang berjalan di port ' + 5000)
+    }else{
+        console.log('Backend server sedang berjalan di port ' + process.env.PORT)
+    }
+    
 });
 
 mongoose.connect(process.env.MONGO_URL).then(()=>{
