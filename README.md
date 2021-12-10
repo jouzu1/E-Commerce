@@ -13,3 +13,8 @@ Essential File
 ---
 - .env mengandung connection string ke DB, jadi ini rahasia dan tidak ada di repository
 - secret_connect.js juga sama dengan .env jadi tidak di push ke repository
+
+Node.js Design Pattern
+---
+- Folder routes berisikan banyak route seperti halnya file controller berisikan nama-nama service atau endpoint dengan berbagai macam method GET/POST/PUT(UPDATE)/DELETE
+- Folder Models berisikan object atau bisa kita samakan dengan file Class
