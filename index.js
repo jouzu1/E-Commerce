@@ -7,6 +7,8 @@ const connString = require('./secret_connect'); //Secret Connection String to DB
 
 const dotenv = require('dotenv');               //Ini juga sama, memanggil secret key dari file .env
 
+const userRoute = require('./routes/user.js');  //Memanggil service/endpoint /usertest ke main file ini yaitu index.js
+
 dotenv.config();                                //Line ini untuk bisa menggunakan/memanggil file .env dengan cara process.env.*namaVariabelnya*
 
 
@@ -19,13 +21,13 @@ app.listen(process.env.PORT || 5000,()=>{       //Menambahkan kondisi jika nilai
     
 });
 
-mongoose.connect(process.env.MONGO_URL).then(()=>{
+mongoose.connect(process.env.MONGO_URL).then(()=>{  //Menyambungkan app ini ke MongoDB cloud
     console.log("Koneksi ke DB Berhasil")
 }).catch((err)=>{
     console.log(err);
 });
 
-app.get("/test/app",()=>{
-    console.log("HTTP GET Berhasil di coba")
-})
+
+app.use("/api",userRoute)                       //Memanggil service dengan HTTP GET *localhost:5000/api/usertest 
+
 
