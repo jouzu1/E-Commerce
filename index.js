@@ -27,7 +27,7 @@ mongoose.connect(process.env.MONGO_URL).then(()=>{  //Menyambungkan app ini ke M
     console.log(err);
 });
 
-
-app.use("/api",userRoute)                       //Memanggil service dengan HTTP GET *localhost:5000/api/usertest 
+app.use(express.json());                        //Line code ini berfungsi untuk menambahkan body parser untuk METHOD POST, UPDATE dan bisa juga DELETE
+app.use("/api",userRoute)                       //Memanggil service dengan HTTP GET/POST/UPDATE/DELETE *localhost:5000/api/usertest 
 
 
