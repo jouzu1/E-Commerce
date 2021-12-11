@@ -25,7 +25,7 @@ router.post("/register", async(req,res)=>{                              //Menggu
 //LOGIN USER
 router.post('/login', async (req,res)=>{
     try {
-        const userLogin = await User.findOne({username:req.body.username});
+        const userLogin = await User.findOne({username:req.body.username}); 
 
     } catch (error) {
         
