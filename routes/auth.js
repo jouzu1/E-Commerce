@@ -2,6 +2,7 @@ const router = require('express').Router();
 const User = require('../Models/user');
 const bcrypt = require('bcryptjs');                                     //Memanggil cryptojs untuk meng-encrypt password ke DB
 const dotenv = require('dotenv');                                       //Memanggil library dotenv agar bisa memanggil .env file
+var CryptoJS = require("crypto-js");
 
 
 //REGISTER USER
@@ -9,7 +10,7 @@ router.post("/register", async(req,res)=>{                              //Menggu
     const newUser = new User({
         username : req.body.username,
         email : req.body.email,
-        password : bcrypt.hashSync(req.body.password,bcrypt.genSaltSync(10)).toString(),            //Line ini digunakan utk meng-encrypt password, memanggil file .env serta menampilkan password kedalam response json dalam bentuk string
+        password : CryptoJS.AES.encrypt(req.body.password,process.env.PASSWORD).toString(),            //Line ini digunakan utk meng-encrypt password, memanggil file .env serta menampilkan password kedalam response json dalam bentuk string
     })
     try{
         const SaveUser = await newUser.save();                          //Variabel dengan memakai method save() node js untuk menyimpan object newUser ke MongoDB
@@ -18,6 +19,16 @@ router.post("/register", async(req,res)=>{                              //Menggu
     }catch(err){
         // res.send(500,err);
         res.status(500).send(err);
+    }
+})
+
+//LOGIN USER
+router.post('/login', async (req,res)=>{
+    try {
+        const userLogin = await User.findOne({username:req.body.username});
+
+    } catch (error) {
+        
     }
 })
 
