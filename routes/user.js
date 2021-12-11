@@ -9,6 +9,18 @@ const { route } = require('express/lib/application');
 
 const router = require('express').Router();
 
+/**
+ * 
+ * 
+ * 
+ *                                      TESTING
+ * 
+ * 
+ * 
+ */
+
+
+
 router.get("/usertest",(req,res)=>{         //Ini nama service/endpointnya dengan menggunakan methode GET, dan ini masih DUMMY
     res.send("User Test Berhasil")
 })
@@ -21,5 +33,9 @@ router.post("/usertest",(req,res)=>{        //Nama service dengan method POST te
     res.send(username)
     // console.log(username);           
 })
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
 
 module.exports = router
