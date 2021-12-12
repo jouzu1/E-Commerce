@@ -3,6 +3,7 @@ const User = require('../Models/user');
 // const bcrypt = require('bcryptjs');                                     //Memanggil cryptojs untuk meng-encrypt password ke DB
 const dotenv = require('dotenv');                                       //Memanggil library dotenv agar bisa memanggil .env file
 var CryptoJS = require("crypto-js");
+const jwt = require('jsonwebtoken');
 
 
 //REGISTER USER
@@ -35,10 +36,15 @@ router.post('/login', async (req,res)=>{
         // decryptPassword !== req.body.password &&                                //Cara lain dari kondisi IF
         //     res.status(401).send("Wrong credential!")
         // res.status(201).send(userLogin);
+        const accessToken = jwt.sign({                                             //Membuat object/membuat semacam tanda JWT dengan membuat obejct baru sehingga object accessToken akan dijadikan sebagai respond di postman. Hasil respond akan menghasilkan dua object 
+            id:userLogin._id,
+            isAdmin:userLogin.isAdmin
+        },process.env.JWT, {expiresIn:"3d"})
         if(decryptPassword !== req.body.password){
             return res.status(401).send("Wrong credential!")                       //Memberikan 'return' pada saat membuat kondisi
         }else{
-            return res.status(201).send(userLogin);
+            const {password, ...others} = userLogin._doc;
+            return res.status(201).send({others,accessToken});                    //Menghasilkan dua object
         }
     } catch(err) {
          res.status(500).send(err);
