@@ -43,8 +43,8 @@ router.post('/login', async (req,res)=>{
         if(decryptPassword !== req.body.password){
             return res.status(401).send("Wrong credential!")                       //Memberikan 'return' pada saat membuat kondisi
         }else{
-            const {password, ...others} = userLogin._doc;
-            return res.status(201).send({others,accessToken});                    //Menghasilkan dua object
+            const {password, ...newObject} = userLogin._doc;
+            return res.status(201).send({...newObject,accessToken});                    //Menghasilkan dua object
         }
     } catch(err) {
          res.status(500).send(err);
