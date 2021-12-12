@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const User = require('../Models/user');
-const bcrypt = require('bcryptjs');                                     //Memanggil cryptojs untuk meng-encrypt password ke DB
+// const bcrypt = require('bcryptjs');                                     //Memanggil cryptojs untuk meng-encrypt password ke DB
 const dotenv = require('dotenv');                                       //Memanggil library dotenv agar bisa memanggil .env file
 var CryptoJS = require("crypto-js");
 
@@ -25,10 +25,23 @@ router.post("/register", async(req,res)=>{                              //Menggu
 //LOGIN USER
 router.post('/login', async (req,res)=>{
     try {
-        const userLogin = await User.findOne({username:req.body.username}); 
-
-    } catch (error) {
+        const userLogin = await User.findOne({username:req.body.username});
+        // !userLogin && res.status(401).send("User not exist!");                  //Cara lain dari kondisi IF
+        if(!userLogin){
+            return res.status(401).send("User not exist!");                        //Memberikan 'return'setiap membuat kondisi
+        }
         
+        const decryptPassword = CryptoJS.AES.decrypt(userLogin.password,process.env.PASSWORD).toString(CryptoJS.enc.Utf8);
+        // decryptPassword !== req.body.password &&                                //Cara lain dari kondisi IF
+        //     res.status(401).send("Wrong credential!")
+        // res.status(201).send(userLogin);
+        if(decryptPassword !== req.body.password){
+            return res.status(401).send("Wrong credential!")                       //Memberikan 'return' pada saat membuat kondisi
+        }else{
+            return res.status(201).send(userLogin);
+        }
+    } catch(err) {
+         res.status(500).send(err);
     }
 })
 
