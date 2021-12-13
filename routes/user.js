@@ -5,9 +5,13 @@
  */
 
 const { route } = require('express/lib/application');
+const user = require('../Models/user');
 
 
 const router = require('express').Router();
+
+const {verifyToken, verifyTokenAndAuthorization} = require('./verifyToken');
+
 
 /**
  * 
@@ -35,6 +39,31 @@ router.post("/usertest",(req,res)=>{        //Nama service dengan method POST te
 })
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+     
+//UPDATE DATA USER
+/**
+ * Service ini adalah untuk update data user
+ * Untuk update data user menggunakan Token yang harus di verifikasi terlebih dahulu
+ */
+
+router.put("/update/:id", verifyTokenAndAuthorization, async(req,res)=>{
+    if(req.body.password){
+        req.body.password = CryptoJS.AES.encrypt(
+            req.body.password,
+            process.env.PASSWORD
+        ).toString();
+    }
+    try {
+        const updatedUser = await user.findByIdAndUpdate(req.params.id, {
+            $set : req.body,
+        },{new:true});
+        const {password, ...noDisplayingPassword} = updatedUser._doc;
+        // console.log(noDisplayingPassword);
+        return res.status(201).send(noDisplayingPassword);
+    } catch (error) {
+        return res.status(500).send(error)
+    }
+})
 
 
 
