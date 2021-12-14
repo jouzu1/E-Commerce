@@ -48,7 +48,7 @@ router.post("/usertest",(req,res)=>{        //Nama service dengan method POST te
 
 router.put("/update/:id", verifyTokenAndAuthorization, async(req,res)=>{
     if(req.body.password){
-        req.body.password = CryptoJS.AES.encrypt(
+        req.body.password = CryptoJS.AES.encrypt(                           //Jika ingin merubah password, block code ini akan meng-encrypt ulang kembali password yang sudah kita ubah
             req.body.password,
             process.env.PASSWORD
         ).toString();

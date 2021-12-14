@@ -39,7 +39,7 @@ router.post('/login', async (req,res)=>{
         const accessToken = jwt.sign({                                             //Membuat object/membuat semacam tanda JWT dengan membuat obejct baru sehingga object accessToken akan dijadikan sebagai respond di postman. Hasil respond akan menghasilkan dua object 
             id:userLogin._id,
             isAdmin:userLogin.isAdmin
-        },process.env.JWT, {expiresIn:"3d"})
+        },process.env.JWT, {expiresIn:"3d"})                                       //Membuat Token JWT dengan menggunakan secret key dari file .env dengan variabel JWT
         if(decryptPassword !== req.body.password){
             return res.status(401).send("Wrong credential!")                       //Memberikan 'return' pada saat membuat kondisi
         }else{

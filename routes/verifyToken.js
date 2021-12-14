@@ -12,9 +12,10 @@ const verifyToken = (req,res,next) => {                                 //Fungsi
         const token = authHeader;
         jwt.verify(token, process.env.JWT, (err,user)=>{
             if(err){
-                res.status(403).send("Token is not valid, please Re-Login to receive new Token");
+                res.status(403).send("Token is not valid, please Re-Login to receive new Token");   //Validasi dengan crosscheck antara secret key dari JWT hasil login dengan secret key  dari file .env
             }
             req.user = user;
+            // console.log(req.user);
             next();   
         })
     }else{
