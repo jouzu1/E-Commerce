@@ -3,11 +3,12 @@ All credits thanks to https://www.youtube.com/watch?v=rMiRZ1iRC0A&t=4553s
 *Notes* : Tidak di push file dengan isi secret keynya.
 
 Services
-----------------------------------------------------------------
+---
 - /register = Create new user
 - /login = login user and get JWT
 - /api/put/:id = update user but must verify the token of user itself
 - /api/delete/:id = user with admin role can use this delete service but must to verify token first
+
 Initialization
 ---
 - npm init -y
