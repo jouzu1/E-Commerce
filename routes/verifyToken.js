@@ -23,7 +23,7 @@ const verifyToken = (req,res,next) => {                                 //Fungsi
     }
 }
 
-const verifyTokenAndAuthorization = (req,res,next)=>{                      //Fungsi untuk otorisasi Token dengan memanggin function verifyToken
+const verifyTokenAndAuthorization = (req,res,next)=>{                      //Fungsi untuk otorisasi Token dengan memanggil function verifyToken
     verifyToken(req,res,()=>{
         if(req.user.id === req.params.id || req.user.isAdmin){
             next()
@@ -33,5 +33,15 @@ const verifyTokenAndAuthorization = (req,res,next)=>{                      //Fun
     })
 }
 
-module.exports = {verifyToken, verifyTokenAndAuthorization};
+const verifyTokenAndAdmin = (req,res,next)=>{                      //Fungsi untuk meng-otentikasi Admin dengan memanggil function verifyToken
+    verifyToken(req,res,()=>{
+        if(req.user.isAdmin == true){
+            next()
+        }else{
+            res.status(403).send("Not Allowed to do such Action");
+        }
+    })
+}
+
+module.exports = {verifyToken, verifyTokenAndAuthorization, verifyTokenAndAdmin};
 

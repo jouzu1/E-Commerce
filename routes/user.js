@@ -10,7 +10,7 @@ const user = require('../Models/user');
 
 const router = require('express').Router();
 
-const {verifyToken, verifyTokenAndAuthorization} = require('./verifyToken');
+const {verifyToken, verifyTokenAndAuthorization, verifyTokenAndAdmin} = require('./verifyToken');
 
 
 /**
@@ -54,7 +54,7 @@ router.put("/update/:id", verifyTokenAndAuthorization, async(req,res)=>{
         ).toString();
     }
     try {
-        const updatedUser = await user.findByIdAndUpdate(req.params.id, {
+        const updatedUser = await user.findByIdAndUpdate(req.params.id, {   //Menggunakan method MongoDB untuk mencari user berdasarkan ID dan set object dari body postman melalui method findByIdAndUpdate()
             $set : req.body,
         },{new:true});
         const {password, ...noDisplayingPassword} = updatedUser._doc;
@@ -65,6 +65,18 @@ router.put("/update/:id", verifyTokenAndAuthorization, async(req,res)=>{
     }
 })
 
-
+//DELETE USER 
+/**
+ * SERVICE DELETE USER
+ * Untuk memakai service ini, dibutuhkan token dari user yang sudah login (hit service login) dan memiliki/mempunyai role admin
+ */
+router.delete('/delete/:id', verifyTokenAndAdmin, async(req,res)=>{     
+    try {
+        await user.findByIdAndDelete(req.params.id);                    //Menggunakan method MongoDB untuk mencari user berdasarkan ID dan menghapus user tersebut, namun user yang bisa menghapus harus memilkik role admin
+        res.status(201).send("User telah terhapus");
+    } catch (error) {
+        res.status(500).send("Delete error");
+    }
+})
 
 module.exports = router
