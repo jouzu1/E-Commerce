@@ -79,4 +79,39 @@ router.delete('/delete/:id', verifyTokenAndAdmin, async(req,res)=>{
     }
 })
 
+//SERVICE GET USER 
+router.get("/find/:id", verifyTokenAndAdmin, async(req,res)=>{
+    try {
+        const findUser = await user.findById(req.params.id);        //Ngambilnya bukan dari body, tapi dari params yang ada di service
+        const {password, ...User} = findUser._doc;
+        return res.status(200).send(User);
+    } catch (error) {
+        return res.status(500).send(error);
+    }
+})
+
+//SERVICE GET USERS
+router.get("/findusers", verifyTokenAndAdmin, async(req,res)=>{
+    const query = req.query.new                                     //Query service
+    const array = [];
+    try {
+        const findUsers = query ? await user.find().limit(5) : await user.find();
+
+        /**
+         * Hasil respond JSONnya menampilkan password dari setiap user yang di get
+         * Untuk menghilangkan property 'password', object-object dalam array harus di iterasi menggunakan forEach
+         * lalu menggunakan Object.assign({}, *namaParameter) dan 'delete' untuk menghapus object property atau object key
+         */
+        findUsers.forEach(x=>{                  
+            const temp = Object.assign({}, x._doc);
+            delete temp.password;
+            // console.log(temp);
+            array.push(temp);
+        })
+        // console.log(array);
+        return res.status(200).send(array);
+    } catch (error) {
+        return res.status(500).send(error);
+    }
+})
 module.exports = router
