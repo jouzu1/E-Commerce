@@ -54,9 +54,10 @@ router.put("/update/:id", verifyTokenAndAuthorization, async(req,res)=>{
         ).toString();
     }
     try {
-        const updatedUser = await user.findByIdAndUpdate(req.params.id, {   //Menggunakan method MongoDB untuk mencari user berdasarkan ID dan set object dari body postman melalui method findByIdAndUpdate()
-            $set : req.body,
-        },{new:true});
+        // const updatedUser = await user.findByIdAndUpdate(req.params.id, {   //Menggunakan method MongoDB untuk mencari user berdasarkan ID dan set object dari body postman melalui method findByIdAndUpdate()
+        //     $set : req.body,
+        // },{new:true});
+        const updatedUser = await user.findByIdAndUpdate(req.params.id, req.body,{new:true});
         const {password, ...noDisplayingPassword} = updatedUser._doc;
         // console.log(noDisplayingPassword);
         return res.status(201).send(noDisplayingPassword);
