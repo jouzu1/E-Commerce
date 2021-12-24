@@ -13,6 +13,7 @@ router.post("/register", async(req,res)=>{                              //Menggu
         email : req.body.email,
         password : CryptoJS.AES.encrypt(req.body.password,process.env.PASSWORD).toString(),            //Line ini digunakan utk meng-encrypt password, memanggil file .env serta menampilkan password kedalam response json dalam bentuk string
     })
+    // const newUser = new User(req.body);                              //Bisa menggunakan cara dari line code ini untuk menyimpan object baru ke MongoDB dengan mengambil object body dari postman/Testing Tool API
     try{
         const SaveUser = await newUser.save();                          //Variabel dengan memakai method save() node js untuk menyimpan object newUser ke MongoDB
         // res.send(200, SaveUser);                                        

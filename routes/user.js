@@ -115,4 +115,36 @@ router.get("/findusers", verifyTokenAndAdmin, async(req,res)=>{
         return res.status(500).send(error);
     }
 })
+
+/**
+ * Service /stats meng-aggregate semua collection jadi satu
+ * lalu di filter dengan menggunakan Query MongoDB NoSQL dengan $match dan $group
+ * Methode Aggregate seperti menggunakan query, tapi querynya bukan MySQL tapi NoSQL
+ * Lebih gampang pakai cara ini jika ingin menampilkan data sesuai kemauan kita tetapi pakainya agak ribet karena gw baru tau query jenis ini
+ */
+//SERVICE /stats
+router.get('/stats',verifyTokenAndAdmin, async(req,res)=>{
+    const date = new Date();
+    const lastYear = new Date(date.setFullYear(date.getFullYear()-1));  //Tanggal dan tahun lalu 
+    // console.log(lastYear);
+    try {
+        const data = await user.aggregate([
+            {$match:{createdAt:{$gte:lastYear}}},                       //Menggabungkan collection dan di filter menggunakan query $match berdasarkan field createdAt dengan value dari variabel lastYear
+            {
+                $project:{
+                    month:{$month:"$createdAt"}
+                }
+            },
+            {
+                $group:{                                                //Lalu query $group adalah query yang terkahir
+                    _id:"$month",
+                    total:{$sum:1}
+                }
+            }
+        ]);
+        res.status(200).send(data);
+    } catch (error) {
+        res.status(500).send(error);
+    }
+})
 module.exports = router
