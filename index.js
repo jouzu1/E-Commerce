@@ -3,7 +3,7 @@ const app = express();                          //Untuk menjalankan server backe
 
 const mongoose = require('mongoose');           //Untuk menyambungkan app ke DB Cloud Atlas Mongo
 
-const connString = require('./secret_connect'); //Secret Connection String to DB, dont share this string!!
+// const connString = require('./secret_connect'); //Secret Connection String to DB, dont share this string!!
 
 const dotenv = require('dotenv');               //Ini juga sama, memanggil secret key dari file .env
 

@@ -1,14 +1,53 @@
 const router = require('express').Router();
 const product = require('../Models/product');
 const { verifyTokenAndAdmin } = require('./verifyToken');
-const {uploadFileMiddleware} = require('../upload');
+const multer = require("multer");
+const path = require('path');
+var fs = require('fs');                         //Untuk membuat folder
+var dir = '../uploads'
+
+/**
+ * Kondisi dibawah ini untuk membuat direktori/folder uploads di folder E-Commerce
+ * Dicek apakah ada folder uploads menggunakan methode fs.existsSync()
+ * Jika tidak ada, membuat folder baru menggunakan fs.mkdirSync()
+ */
+if(fs.existsSync(path.join(__dirname,dir
+    ))){
+
+    }else{
+        fs.mkdirSync(path.join(__dirname,dir
+        ))
+    }
+
+/**
+ * const diskStorage berguna untuk memasukkan file yang sudah di Upload kedalam folder uploads
+ */
+const diskStorage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, path.join(__dirname, "../uploads"));
+    },
+    // konfigurasi penamaan file yang unik
+    filename: function (req, file, cb) {
+      cb(
+        null,
+        file.fieldname + "-" + Date.now() + path.extname(file.originalname)
+      );
+    },
+  });
+
+const upload = multer({
+    storage: diskStorage,
+    // dest:'images',
+    limits:{ fileSize:10000000},
+})
 
 //CREATE PRODUCT SERVICE
-router.post("/create",verifyTokenAndAdmin, async(req,res)=>{
-    const newProd = new product(req.body);
+router.post("/create",verifyTokenAndAdmin, upload.single('img'),async(req,res)=>{
     try {
-        const savedProd = await newProd.save();
-        res.status(201).send(savedProd);
+        req.body.img = req.file.path
+        const prod = new product(req.body)
+        const saveProd = await prod.save();
+        res.status(201).send(saveProd);
     } catch (error) {
         res.status(500).send(error);
     }
