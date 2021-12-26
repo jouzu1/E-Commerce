@@ -91,7 +91,7 @@ router.get("/find/:id", verifyTokenAndAdmin, async(req,res)=>{
     }
 })
 
-//SERVICE GET USERS
+//SERVICE GET USERS and TOTAL USERS
 router.get("/findusers", verifyTokenAndAdmin, async(req,res)=>{
     const query = req.query.new                                     //Query service
     const array = [];
@@ -109,8 +109,18 @@ router.get("/findusers", verifyTokenAndAdmin, async(req,res)=>{
             // console.log(temp);
             array.push(temp);
         })
+        const totalUsers = await user.aggregate(
+            [
+                {
+                    $group:{
+                        _id:null,
+                        totalUsers:{$sum:1}
+                    }
+                }
+            ]);
         // console.log(array);
-        return res.status(200).send(array);
+        array.push(totalUsers);
+        return res.status(200).send(array);                 //JSON Structure => [{},{},....,[{totalUsers}]]
     } catch (error) {
         return res.status(500).send(error);
     }
