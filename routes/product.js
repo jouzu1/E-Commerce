@@ -35,10 +35,20 @@ router.get("/getproducts", verifyTokenAndAdmin, async(req, res)=>{
         totalProd.map(x=>{
             arrTotal.push(x);
         })
-        
+
         res.status(200).send(arrTotal); 
     } catch (error) {
         res.status(500).send(error);
+    }
+})
+
+//UPDATE PRODUCT
+router.put("/updateproduct/:id",verifyTokenAndAdmin, async(req,res)=>{
+    try {
+        const updateProd = await product.findByIdAndUpdate(req.params.id, req.body,{new:true})
+        return res.status(201).send(updateProd);
+    } catch (error) {
+        return res.status(201).send(error);
     }
 })
 
