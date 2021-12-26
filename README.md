@@ -6,8 +6,8 @@ Services
 ---
 - POST /register = Create new user
 - POST /login = login user and get JWT
-- PUT /api/put/:id = update user but must verify the token of user itself
-- DELETE /api/delete/:id = user with admin role can use this delete service but must to verify token first
+- PUT /user/put/:id = update user but must verify the token of user itself
+- DELETE /user/delete/:id = user with admin role can use this delete service but must to verify token first
 
 Initialization
 ---
