@@ -5,6 +5,7 @@ const multer = require("multer");
 const path = require('path');
 var fs = require('fs');                         //Untuk membuat folder
 var dir = '../uploads'
+var sanitize = require("sanitize-filename");
 
 /**
  * Kondisi dibawah ini untuk membuat direktori/folder uploads di folder E-Commerce
@@ -44,7 +45,7 @@ const upload = multer({
 //CREATE PRODUCT SERVICE
 router.post("/create",verifyTokenAndAdmin, upload.single('img'),async(req,res)=>{
     try {
-        req.body.img = req.file.path
+        req.body.img = sanitize(req.file.path);
         const prod = new product(req.body)
         const saveProd = await prod.save();
         res.status(201).send(saveProd);
