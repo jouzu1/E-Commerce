@@ -10,6 +10,7 @@ const dotenv = require('dotenv');               //Ini juga sama, memanggil secre
 //Imported route service
 const userRoute = require('./routes/user.js');  //Memanggil service/endpoint /usertest ke main file ini yaitu index.js
 const authRoute = require('./routes/auth.js'); //Memanggil service auth
+const productRoute = require('./routes/product'); //Memanggil service auth
 
 dotenv.config();                                //Line ini untuk bisa menggunakan/memanggil file .env dengan cara process.env.*namaVariabelnya*
 
@@ -32,5 +33,6 @@ mongoose.connect(process.env.MONGO_URL).then(()=>{  //Menyambungkan app ini ke M
 app.use(express.json());                        //Line code ini berfungsi untuk menambahkan body parser untuk METHOD POST, UPDATE dan bisa juga DELETE
 app.use(authRoute);                             //Memanggil service registrasi untuk menambahkan model user ke MongoDB
 app.use("/api",userRoute)                       //Memanggil service dengan HTTP GET/POST/UPDATE/DELETE *localhost:5000/api/usertest 
+app.use("/product",productRoute)                //Memanggil service route dari product
 
 
