@@ -118,9 +118,11 @@ router.get("/findusers", verifyTokenAndAdmin, async(req,res)=>{
                     }
                 }
             ]);
+        totalUsers.map(x=>{
+            array.push(x);
+        })
         // console.log(array);
-        array.push(totalUsers);
-        return res.status(200).send(array);                 //JSON Structure => [{},{},....,[{totalUsers}]]
+        return res.status(200).send(array);                 //JSON Structure => [{},{},....,{totalUsers}]
     } catch (error) {
         return res.status(500).send(error);
     }

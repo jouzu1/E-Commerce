@@ -16,8 +16,9 @@ router.post("/register", async(req,res)=>{                              //Menggu
     // const newUser = new User(req.body);                              //Bisa menggunakan cara dari line code ini untuk menyimpan object baru ke MongoDB dengan mengambil object body dari postman/Testing Tool API
     try{
         const SaveUser = await newUser.save();                          //Variabel dengan memakai method save() node js untuk menyimpan object newUser ke MongoDB
-        // res.send(200, SaveUser);                                        
-        res.status(200).send(SaveUser);                                 //res.send dipakai untuk memberikan response berupa hasil object yang kita POST di postman
+        // res.send(200, SaveUser);   
+        // console.log(SaveUser);                                   
+        res.status(201).send(SaveUser);                                 //res.send dipakai untuk memberikan response berupa hasil object yang kita POST di postman
     }catch(err){
         // res.send(500,err);
         res.status(500).send(err);
