@@ -28,7 +28,14 @@ router.get("/getproducts", verifyTokenAndAdmin, async(req, res)=>{
                 }
             ]
         )
-        arrTotal.push(prod,totalProd);
+        prod.map(x=>{
+            arrTotal.push(x);
+        })
+
+        totalProd.map(x=>{
+            arrTotal.push(x);
+        })
+        
         res.status(200).send(arrTotal); 
     } catch (error) {
         res.status(500).send(error);
