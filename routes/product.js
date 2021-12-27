@@ -123,5 +123,4 @@ router.delete("/delete/:id",verifyTokenAndAdmin, async(req, res)=>{
     }
     
 })
-
 module.exports = router
