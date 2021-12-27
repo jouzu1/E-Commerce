@@ -45,7 +45,7 @@ const upload = multer({
 //CREATE PRODUCT SERVICE
 router.post("/create",verifyTokenAndAdmin, upload.single('img'),async(req,res)=>{
     try {
-        req.body.img = sanitize(req.file.path);
+        req.body.img = sanitize(req.file.path);                 //Membersihkan nama filepath dengan sanitize()
         const prod = new product(req.body)
         const saveProd = await prod.save();
         res.status(201).send(saveProd);

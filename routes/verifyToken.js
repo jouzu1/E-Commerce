@@ -7,10 +7,17 @@ const jwt = require('jsonwebtoken');
 
 //Fungsi di bawah ditulis dalam bentuk ES6
 const verifyToken = (req,res,next) => {                                 //Fungsi untuk verify Token
-    const authHeader = req.headers.token;
+    const authHeader = req.headers.token;                               //Memasukkan key di header bernama 'token' lalu valuenya token yg kita dapat saat hit service login
     if(authHeader){
         const token = authHeader;
-        jwt.verify(token, process.env.JWT, (err,user)=>{
+
+        /**
+         * Pada saat membuat JWT dengan jwt.sign(), kita mengambil variabel JWT di file .env sebagai key di JWT
+         * Lalu jwt.verify() ini gunanya membandingkan key dari JWT yang kita dapat dari service login 
+         * lalu membandingkan key yang ada di file .env local dengan menggunakan variabel JWT di file .env
+         */
+
+        jwt.verify(token, process.env.JWT, (err,user)=>{                
             if(err){
                 res.status(403).send("Token is not valid, please Re-Login to receive new Token");   //Validasi dengan crosscheck antara secret key dari JWT hasil login dengan secret key  dari file .env
             }

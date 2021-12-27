@@ -54,10 +54,10 @@ router.put("/update/:id", verifyTokenAndAuthorization, async(req,res)=>{
         ).toString();
     }
     try {
-        // const updatedUser = await user.findByIdAndUpdate(req.params.id, {   //Menggunakan method MongoDB untuk mencari user berdasarkan ID dan set object dari body postman melalui method findByIdAndUpdate()
+        // const updatedUser = await user.findByIdAndUpdate(req.params.id, {                    //Menggunakan method MongoDB untuk mencari user berdasarkan ID dan set/save object dari body postman melalui method findByIdAndUpdate()
         //     $set : req.body,
         // },{new:true});
-        const updatedUser = await user.findByIdAndUpdate(req.params.id, req.body,{new:true});
+        const updatedUser = await user.findByIdAndUpdate(req.params.id, req.body,{new:true});   //Menggunakan method MongoDB untuk mencari user berdasarkan ID dan set/save object dari body postman melalui method findByIdAndUpdate()
         const {password, ...noDisplayingPassword} = updatedUser._doc;
         // console.log(noDisplayingPassword);
         return res.status(201).send(noDisplayingPassword);
@@ -109,6 +109,12 @@ router.get("/findusers", verifyTokenAndAdmin, async(req,res)=>{
             // console.log(temp);
             array.push(temp);
         })
+
+        /**
+         * Jenis query dari MongoDB untuk menggabungungkan dokumen menjadi collection
+         * Lalu digabungkan dengan query $group serta menghitung total user dengan $sum:1
+         */
+
         const totalUsers = await user.aggregate(
             [
                 {
