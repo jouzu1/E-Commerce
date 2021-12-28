@@ -43,12 +43,22 @@ const upload = multer({
 })
 
 //CREATE PRODUCT SERVICE
-router.post("/create",verifyTokenAndAdmin, upload.single('img'),async(req,res)=>{
+router.post("/create",verifyTokenAndAdmin, upload.single('img'),async(req,res)=>{          //upload.single('img') yang berarti hanya mengenali key 'img' dan mengambil value dari key 'img' tersebut
     try {
-        req.body.img = sanitize(req.file.path);                             //Membersihkan nama filepath dengan sanitize()
-        req.body.size = fs.statSync(req.file.path).size/(1024*1024);        //Menambahkan keterangan ukuran file
+        req.body.img = sanitize(req.file.path);                                          //Membersihkan nama filepath dengan sanitize()
+        req.body.size = fs.statSync(req.file.path).size/(1024*1024);                    //Menambahkan keterangan ukuran file
         req.body.fileType = path.extname(req.file.path);
         const prod = new product(req.body);
+
+        // const prod = new product({
+        //     title: req.body.title,
+        //     desc:req.body.desc,
+        //     price: req.body.price,
+        //     img:sanitize(req.file.path),
+        //     size:fs.statSync(req.file.path).size/(1024*1024),
+        //     fileType:path.extname(req.file.path)
+        // })
+        
         const saveProd = await prod.save();
         return res.status(201).send(saveProd);
     } catch (error) {
