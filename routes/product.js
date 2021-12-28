@@ -97,8 +97,8 @@ router.get("/getproducts", verifyTokenAndAdmin, async(req, res)=>{
 
 //GET PRODUCT
 router.get("/",verifyTokenAndAdmin, async(req, res)=>{
-    const qNew = req.query.new;                                 //Nama query untuk di service nya 'new'
-    const qCategories = req.query.category;                     //Nama querynya pas di service nya 'category'
+    const qNew = req.query.new;                                 //Nama query postman untuk di service nya 'new'
+    const qCategories = req.query.category;                     //Nama query postman pas di service nya 'category'
     const qTitle = req.query.title;                     //Nama querynya pas di service nya 'category'
     try {
         let qNewProduct;
