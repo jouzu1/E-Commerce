@@ -43,7 +43,7 @@ const upload = multer({
 })
 
 //CREATE PRODUCT SERVICE
-router.post("/create",verifyTokenAndAdmin, upload.single('img'),async(req,res)=>{          //upload.single('img') yang berarti hanya mengenali key 'img' dan mengambil value dari key 'img' tersebut
+router.post("/create",verifyTokenAndAdmin, upload.single('img'),async(req,res)=>{          //upload.single('img') yang berarti hanya mengenali key 'img' di body form-data postman untuk service /product/create dan mengambil value dari key 'img' tersebut
     try {
         req.body.img = sanitize(req.file.path);                                          //Membersihkan nama filepath dengan sanitize()
         req.body.size = fs.statSync(req.file.path).size/(1024*1024);                    //Menambahkan keterangan ukuran file
