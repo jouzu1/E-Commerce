@@ -47,7 +47,8 @@ router.post("/create",verifyTokenAndAdmin, upload.single('img'),async(req,res)=>
     try {
         req.body.img = sanitize(req.file.path);                             //Membersihkan nama filepath dengan sanitize()
         req.body.size = fs.statSync(req.file.path).size/(1024*1024);        //Menambahkan keterangan ukuran file
-        const prod = new product(req.body)
+        req.body.fileType = path.extname(req.file.path);
+        const prod = new product(req.body);
         const saveProd = await prod.save();
         return res.status(201).send(saveProd);
     } catch (error) {
