@@ -46,11 +46,12 @@ const upload = multer({
 router.post("/create",verifyTokenAndAdmin, upload.single('img'),async(req,res)=>{
     try {
         req.body.img = sanitize(req.file.path);                 //Membersihkan nama filepath dengan sanitize()
+        req.body.size = fs.statSync(req.file.path).size/(1024*1024);
         const prod = new product(req.body)
         const saveProd = await prod.save();
-        res.status(201).send(saveProd);
+        return res.status(201).send(saveProd);
     } catch (error) {
-        res.status(500).send(error);
+        return res.status(500).send(error);
     }
 })
 
