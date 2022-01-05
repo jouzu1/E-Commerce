@@ -7,7 +7,9 @@ const UserSchema = new mongoose.Schema({
     isAdmin:{type: Boolean, default:false},                  
 },{timestamps:true});
 
-module.exports = mongoose.model("User",UserSchema); //Di line code ini, object UserSchema akan kita ekspor keluar dari file ini sebagai "User"
+module.exports = mongoose.model("User",UserSchema); 
+
+//Di line code ini, object UserSchema akan kita ekspor keluar dari file ini sebagai "User"
 
 //Object bernama UserSchema dengan propsnya yaitu username,email,password, isAdmin memiliki sub-props dengan isi tipe data, unique, required, dan default
 
