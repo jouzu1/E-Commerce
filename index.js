@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();                              //Untuk menjalankan server backend
+const cookieParser = require('cookie-parser')
 
 const mongoose = require('mongoose');               //Untuk menyambungkan app ke DB Cloud Atlas Mongo
 
@@ -35,7 +36,10 @@ mongoose.connect(process.env.MONGO_URL).then(()=>{  //Menyambungkan app ini ke M
 }).catch((err)=>{
     console.log(err);
 });
-
+/**
+ * Middleware (app.use())
+*/
+app.use(cookieParser())                             //Menggunakan cookies agar dapat memparsing cookies
 app.use(express.json());                            //Line code ini berfungsi untuk menambahkan body parser untuk METHOD POST, UPDATE dan bisa juga DELETE
 app.use(authRoute);                                 //Memanggil service registrasi untuk menambahkan model user ke MongoDB
 app.use("/user",userRoute)                          //Memanggil service dengan HTTP GET/POST/UPDATE/DELETE *localhost:5000/api/usertest 

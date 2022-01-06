@@ -7,9 +7,11 @@ const jwt = require('jsonwebtoken');
 
 //Fungsi di bawah ditulis dalam bentuk ES6
 const verifyToken = (req,res,next) => {                                 //Fungsi untuk verify Token
-    const authHeader = req.headers.token;                               //Memasukkan key di header bernama 'token' lalu valuenya token yg kita dapat saat hit service login
-    if(authHeader){
-        const token = authHeader;
+    // const authHeader = req.headers.token;                            //Memasukkan key di header bernama 'token' lalu valuenya token yg kita dapat saat hit service login
+    const authCookie = req.cookies.cookie                               //Menggunakan cookies tab di bagian tab respond postman
+    if(authCookie){
+        // const token = authHeader;
+        const token = authCookie;
 
         /**
          * Pada saat membuat JWT dengan jwt.sign(), kita mengambil variabel JWT di file .env sebagai key di JWT

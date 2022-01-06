@@ -6,6 +6,7 @@ var CryptoJS = require("crypto-js");
 const jwt = require('jsonwebtoken');
 
 
+
 //REGISTER USER
 router.post("/register", async(req,res)=>{                              //Menggunakan method POST untuk menulis object ke body di postman
     req.body.password = CryptoJS.AES.encrypt(req.body.password,process.env.PASSWORD).toString();
@@ -43,7 +44,8 @@ router.post('/login', async (req,res)=>{
 
         /**
          * jwt.sign({}) merupakan method untuk membuat payload JWT
-         * Di dalam method tersebut, ada 2 load yaitu id user dan role user yaitu isAdmin   
+         * Di dalam method tersebut, ada 2 load yaitu id user dan role user yaitu isAdmin  
+         * Memakai JWT dan Cookies 
          */
 
         const accessToken = jwt.sign({                                             //Membuat object/membuat semacam tanda JWT dengan membuat obejct baru sehingga object accessToken akan dijadikan sebagai respond di postman. Hasil respond akan menghasilkan dua object 
@@ -55,8 +57,8 @@ router.post('/login', async (req,res)=>{
                                                                                     //Dari logic sebelah kiri, ini cara authentikasi, mencari user dengan findOne(), mendapatkan field password yang di encrypt lalu di decrypt. Setelah itu, hasil password yang di decrypt akan dibandingkan password yang di body
         }else{
             const {password, ...newObject} = userLogin._doc;                        //Mengambil field password setelah itu sisa fieldnya menggunakan spread param/operator
-            return res.status(201).send({...newObject,accessToken});                //Menghasilkan dua object
-        }
+            return res.cookie('cookie',accessToken,{maxAge:259200,httpOnly:true,secure:false}).status(201).send({...newObject,accessToken});                //Menghasilkan dua object + store JWT in cookies
+        }                      //'cookie' adalah nama keynya, sedangkan accessToken adalah valuennya
     } catch(err) {
          res.status(500).send(err);
     }

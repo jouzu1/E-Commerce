@@ -13,7 +13,7 @@ const stripeAuth = stripe('sk_test_51KDfusArJvfa50cfl68k2OEFChzHPplQmo55sX9pCa2i
 //         (stripeErr, stripeRes)=>{
 //             if(stripeErr) {
 //                 res.status(500).send(stripeErr);
-//             }else{
+//             }else{   	
 //                 res.status(500).send(stripeRes);
 //             }
 //         }
@@ -28,10 +28,62 @@ router.post("/newCust", async(req,res)=>{
             name : User.username,
             email : User.email
         })
-        return res.status(201).send(customer)
+         res.status(201).send(customer)
     } catch (error) {
-        return res.status(201).send(error)
+         res.status(201).send(error)
     }
 })
 
+//Add card to existing cust
+router.post("/updatecard/:id", async(req,res)=>{
+    try {
+        console.log(`Body Passed : `, req.body)
+        const{
+            cardNumber,
+            cardExpMonth,
+            cardExpYear,
+            cardCVC,
+            cardName,
+            country,
+            postal_code
+        } = req.body
+        if(!cardNumber||!cardExpMonth||!cardExpYear||!cardCVC||!cardName||!country||!postal_code){
+            return res.status(400).send({
+                Error:"Please input all fields"
+            })
+        }
+
+        const card = await stripe.customers.createSource(
+            req.params.id,
+            {source: {
+            name:cardName,
+            number:cardNumber,
+            exp_month:cardExpMonth,
+            exp_year:cardExpYear,
+            cvc:cardCVC,
+            address_country:country,
+            address_zip:postal_code
+            }}
+          );
+            console.log(card)
+        // const cardToken = await stripe.tokens.create({
+        //     name:cardName,
+        //     number:cardNumber,
+        //     exp_month:cardExpMonth,
+        //     exp_year:cardExpYear,
+        //     cvc:cardCVC,
+        //     address_country:country,
+        //     address_zip:postal_code
+        // })
+        // console.log(cardToken);
+        // const card = await stripe.customers.createSource(customerId,{
+        //     source:`${cardToken.id}`
+        // })
+        
+
+         res.status(201).send(card);
+    } catch (error) {
+         res.status(201).send(error);
+    }
+})
 module.exports = router
