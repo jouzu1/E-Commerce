@@ -67,3 +67,6 @@ app.use(router.get("/mymojo",(req,res)=>{
         res.status(400).send(err);
     })
 }))
+
+//Mengekspor file index.js agar bisa digunakan sebagai testing API di file test
+module.exports = app;
